@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Carousel Unificado</title>
+	<link href="https://fonts.bunny.net/css?family=abel:400" rel="stylesheet" />
+	<style>
+		@layer base, demo;
+
+		@layer demo {
+			.carousel {
+				--items: 6;
+				--carousel-duration: 40s;
+				@media (width > 600px) {
+					--carousel-duration: 30s;
+				}
+				--carousel-width: min(80vw, 1200px);
+				--carousel-item-width: 280px;
+				--carousel-item-height: 450px;
+				--carousel-item-gap: 2rem;
+				--clr-cta: rgb(0, 132, 209);
+
+				position: relative;
+				width: var(--carousel-width);
+				height: var(--carousel-item-height);
+				overflow: clip;
+			}
+
+			.carousel[mask] {
+				mask-image: linear-gradient(to right, transparent, black 10% 90%, transparent);
+			}
+
+			.carousel[reverse] > article {
+				animation-direction: reverse;
+			}
+
+			.carousel:hover > article {
+				animation-play-state: paused;
+			}
+
+			.carousel > article {
+				position: absolute;
+				top: 0;
+				left: calc(100% + var(--carousel-item-gap));
+				width: var(--carousel-item-width);
+				height: var(--carousel-item-height);
+				display: grid;
+				grid-template-rows: 200px auto 1fr auto;
+				gap: 0.25rem;
+				border: 1px solid light-dark(rgba(0 0 0 / 0.25), rgba(255 255 255 / 0.15));
+				padding-block-end: 1rem;
+				border-radius: 10px;
+				background: light-dark(white, rgba(255 255 255 / 0.05));
+				color: light-dark(rgb(49, 65, 88), white);
+				will-change: transform;
+				animation-name: marquee;
+				animation-duration: var(--carousel-duration);
+				animation-timing-function: linear;
+				animation-iteration-count: infinite;
+			}
+
+			.carousel > article:nth-child(1) { --i: 0; animation-delay: calc(var(--carousel-duration) / var(--items) * -0); }
+			.carousel > article:nth-child(2) { --i: 1; animation-delay: calc(var(--carousel-duration) / var(--items) * -1); }
+			.carousel > article:nth-child(3) { --i: 2; animation-delay: calc(var(--carousel-duration) / var(--items) * -2); }
+			.carousel > article:nth-child(4) { --i: 3; animation-delay: calc(var(--carousel-duration) / var(--items) * -3); }
+			.carousel > article:nth-child(5) { --i: 4; animation-delay: calc(var(--carousel-duration) / var(--items) * -4); }
+			.carousel > article:nth-child(6) { --i: 5; animation-delay: calc(var(--carousel-duration) / var(--items) * -5); }
+
+			.carousel img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: 10px 10px 0 0;
+			}
+
+			.carousel > article > *:not(img) {
+				padding: 0 1rem;
+			}
+
+			.carousel > article > div {
+				grid-row: span 2;
+				display: grid;
+				grid-template-rows: subgrid;
+				font-size: 0.8rem;
+			}
+
+			.carousel > article h2 {
+				font-size: 1.2rem;
+				font-weight: 300;
+				padding-block: 0.75rem 0.25rem;
+				margin: 0;
+			}
+
+			.carousel > article p {
+				margin: 0;
+			}
+
+			.carousel > article a {
+				text-decoration: none;
+				text-transform: lowercase;
+				border: 1px solid var(--clr-cta);
+				color: light-dark(var(--clr-cta), white);
+				border-radius: 3px;
+				padding: 0.25rem 0.5rem;
+				place-self: start;
+				transition: 150ms ease-in-out;
+			}
+
+			.carousel > article a:hover,
+			.carousel > article a:focus-visible {
+				background-color: var(--clr-cta);
+				color: white;
+				outline: none;
+			}
+
+			@keyframes marquee {
+				100% {
+					transform: translateX(
+						calc(
+							(var(--items) * (var(--carousel-item-width) + var(--carousel-item-gap))) * -1
+						)
+					);
+				}
+			}
+		}
+
+		@layer base {
+			* {
+				box-sizing: border-box;
+			}
+			:root {
+				color-scheme: light dark;
+				--bg-dark: rgb(2, 6, 24);
+				--bg-light: rgb(229, 229, 229);
+				--txt-light: rgb(10, 10, 10);
+				--txt-dark: rgb(245, 245, 245);
+			}
+			body {
+				background-color: light-dark(var(--bg-light), var(--bg-dark));
+				color: light-dark(var(--txt-light), var(--txt-dark));
+				min-height: 100svh;
+				margin: 0;
+				padding: 1rem;
+				font-size: 1rem;
+				font-family: "Abel", sans-serif;
+				line-height: 1.5;
+				display: grid;
+				place-items: center;
+				gap: 2rem;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="carousel" mask>
+		<article>
+			<img src="https://images.pexels.com/photos/635699/pexels-photo-635699.jpeg" alt="">
+			<h2>The Cross</h2>
+			<div>
+				<p>The Cross is a central symbol of Easter...</p>
+				<a href="#">Read more</a>
+			</div>
+		</article>
+
+		<article>
+			<img src="https://images.pexels.com/photos/7168798/pexels-photo-7168798.jpeg" alt="easter eggs">
+			<h2>Easter Eggs</h2>
+			<div>
+				<p>Easter eggs are a colorful symbol of new life and rebirth...</p>
+				<a href="#">Read more</a>
+			</div>
+		</article>
+
+		<article>
+			<img src="https://images.pexels.com/photos/4099179/pexels-photo-4099179.jpeg" alt="hot cross buns">
+			<h2>Hot Cross Buns</h2>
+			<div>
+				<p>Hot cross buns are sweet, spiced buns marked with a cross...</p>
+				<a href="#">Read more</a>
+			</div>
+		</article>
+
+		<article>
+			<img src="https://images.pexels.com/photos/5145/animal-easter-chick-chicken.jpg" alt="easter chick">
+			<h2>Easter Chick</h2>
+			<div>
+				<p>Easter chicks are a cheerful symbol of new life...</p>
+				<a href="#">Read more</a>
+			</div>
+		</article>
+
+		<article>
+			<img src="https://images.pexels.com/photos/2072158/pexels-photo-2072158.jpeg" alt="easter bunny">
+			<h2>Easter Bunnies</h2>
+			<div>
+				<p>Easter bunnies are a popular symbol of spring...</p>
+				<a href="#">Read more</a>
+			</div>
+		</article>
+
+		<article>
+			<img src="https://images.pexels.com/photos/12787666/pexels-photo-12787666.jpeg" alt="crown of thorms">
+			<h2>Crown of Thorns</h2>
+			<div>
+				<p>The Crown of Thorns symbolizes the suffering of Jesus...</p>
+				<a href="#">Read more</a>
+			</div>
+		</article>
+	</div>
+</body>
+</html>
+<section id="seccion-6">
+  <div class="espacios-container">
+    <h2 class="titulo-seccion">Nuestros espacios</h2>
+    <div class="espacios-slider">
+      <div class="espacios-slide-track">
+        <div class="espacio">
+          <img src="./assets/item34.jpg" alt="Salas bilingües">
+          <p class="espacio-nombre">Salas bilingües</p>
+          <p class="espacio-descripcion">Explora nuestras exposiciones en español e inglés. Espacios accesibles y educativos para todos.</p>
+        </div>
+        <div class="espacio">
+          <img src="./assets/item51.jpg" alt="Auditorio">
+          <p class="espacio-nombre">Auditorio</p>
+          <p class="espacio-descripcion">Con capacidad para 80 personas, disfruta funciones, eventos culturales y actividades escolares.</p>
+        </div>
+        <div class="espacio">
+          <img src="./assets/item53.jpg" alt="Exposiciones temporales">
+          <p class="espacio-nombre">Exposiciones temporales</p>
+          <p class="espacio-descripcion">Una ventana a la diversidad cultural y artística que se renueva constantemente.</p>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section id="seccion-4">
+  <div class="actividades-container">
+    <h2 class="titulo-seccion">Actividades</h2>
+    <div class="actividad">
+      <div class="info">
+        <h3>Visitas guiadas</h3>
+        <p>Martes a sábado de 9:00 a 16:00 h</p>
+        <img src="./assets/item14.jpg" alt="Visitas guiadas">
+        <p>Recorre nuestros espacios a través de la guía y apoyo de especialistas e historiadores capacitados.</p>
+      </div>
+      <div class="info">
+        <h3>Talleres de la Revolución</h3>
+        <p>Martes a viernes de 9:00 a 16:00 h</p>
+        <img src="./assets/item34.jpg" alt="Talleres de la Revolución">
+        <p>Complementa tu visita escolar con las actividades y dinámicas de aprendizaje que tenemos para ti. Se necesita previa agenda.</p>
+      </div>
+      <div class="info">
+        <h3>Títeres “La Charca”</h3>
+        <p>Domingos de 12:00 a 14:00 h</p>
+        <img src="./assets/item18.jpg" alt="Títeres La Charca">
+        <p>Diviértete con las funciones de títeres de La Charca. Actividad para toda la familia.</p>
+      </div>
+      <div class="info">
+        <h3>Exposiciones temporales</h3>
+        <p>Martes a domingo de 9:00 a 17:00</p>
+        <img src="./assets/item41.jpg" alt="Exposiciones temporales">
+        <p>¡De todo un poco!. Visita las exposiciones temporales que nos complacemos en resguardar.</p>
+      </div>
+    </div>
+  </div>
+</section>
